@@ -1,33 +1,62 @@
-package com.nespresso.sofa.interview.hospital.healthstatus;
+package com.nespresso.sofa.interview.hospital;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
-import com.nespresso.sofa.interview.hospital.Patient;
-import com.nespresso.sofa.interview.hospital.Treatement;
-
-public abstract class HealthStatus {
-	protected final List<Treatement> traitements;
-	protected int days;
-
-	public HealthStatus() {
-		traitements = new ArrayList<Treatement>();
-		days = 0;
-	}
-
-	public void applyTraitement(Treatement traitement) {
-		traitements.add(traitement);
-	}
-
-	public void addPeriod(int days) {
-		this.days += days;
-	}
-
-	protected void checkParacetamolPlusAspirin(Patient patiant) {
-		if (traitements.contains(Treatement.ASPIRIN) && traitements.contains(Treatement.PARACETAMOL)) {
-			patiant.setHealthStatus(new Dead());
+public enum HealthStatus {
+	
+	DIABETES ('D'){
+		@Override
+		public HealthStatus next(List<Treatement> treatements) {
+			if(treatements.contains(Treatement.INSULIN)) {
+				return this;
+			}
+			return DEAD;
 		}
+	}, HEALTHY('H') {
+		@Override
+		public HealthStatus next(List<Treatement> treatements) {
+			if(treatements.contains(Treatement.ANTIBIOTIC) && treatements.contains(Treatement.INSULIN)) {
+				return FEVER;
+			}
+			return this;
+		}
+	},
+	DEAD('X') {
+		@Override
+		public HealthStatus next(List<Treatement> treatements) {
+			return this;
+		}
+	},
+	FEVER('F') {
+		@Override
+		public HealthStatus next(List<Treatement> treatements) {
+			if(treatements.contains(Treatement.PARACETAMOL) || treatements.contains(Treatement.ASPIRIN)) {
+				return HEALTHY;
+			}
+			return this;
+		}
+	},
+	TUBERCULUSIS('T') {
+		@Override
+		public HealthStatus next(List<Treatement> treatements) {
+			if(treatements.contains(Treatement.ANTIBIOTIC)) {
+				return HEALTHY;
+			}
+			return this;
+		}
+	};
+	
+	private final char code;
+	
+	private HealthStatus(char code) {
+		this.code = code;
 	}
 
-	public abstract void changeState(Patient patiant);
+	public abstract HealthStatus next(List<Treatement> treatements);
+	
+	@Override
+	public String toString() {
+		return String.valueOf(code);
+	}
 }

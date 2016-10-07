@@ -1,31 +1,28 @@
 package com.nespresso.sofa.interview.hospital;
 
-import com.nespresso.sofa.interview.hospital.healthstatus.HealthStatus;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Patient {
 
 	private HealthStatus healthStatus;
+	private final List<Treatement> treatements = new ArrayList<>();
 
 	public Patient(HealthStatus healthStatus) {
 		this.healthStatus = healthStatus;
 	}
 
-	public HealthStatus getHealthStatus() {
-		return healthStatus;
+	public void apply(Treatement traitement) {
+		treatements.add(traitement);
+		if(treatements.contains(Treatement.ASPIRIN) && treatements.contains(Treatement.PARACETAMOL) ) this.healthStatus = HealthStatus.DEAD;
 	}
 
-	public void setHealthStatus(HealthStatus healthStatus) {
-		this.healthStatus = healthStatus;
+	public void changeState() {
+		this.healthStatus = healthStatus.next(treatements);
 	}
 
-	public void addTimeInQuarantine(int days) {
-		healthStatus.addPeriod(days);
-		healthStatus.changeState(this);
-	}
-
-	public void applyTreatement(Treatement traitement) {
-		healthStatus.applyTraitement(traitement);
-		healthStatus.changeState(this);
+	public boolean check(HealthStatus healthStatus) {
+		return this.healthStatus == healthStatus;
 	}
 
 }

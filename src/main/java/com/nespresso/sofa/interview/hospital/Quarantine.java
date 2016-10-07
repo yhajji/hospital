@@ -5,15 +5,14 @@ import java.util.List;
 public class Quarantine {
 
 	final List<Patient> patients;
-
+	
 	public Quarantine(String patients) {
 		this.patients = PatientsFactory.create(patients);
 	}
 
 	public void wait40Days() {
-		int days = 40;
 		for (Patient patient : patients) {
-			patient.addTimeInQuarantine(days);
+			patient.changeState();
 		}
 	}
 
@@ -36,7 +35,7 @@ public class Quarantine {
 
 	private void applyTreatement(Treatement treatement) {
 		for (Patient patient : patients) {
-			patient.applyTreatement(treatement);
+			patient.apply(treatement);
 		}
 	}
 	

@@ -2,8 +2,9 @@ package com.nespresso.sofa.interview.hospital;
 
 import java.util.ArrayList;
 import java.util.List;
+import static com.nespresso.sofa.interview.hospital.HealthStatus.*;;
 
-import com.nespresso.sofa.interview.hospital.healthstatus.*;
+
 
 public class PatientsFactory {
 
@@ -19,16 +20,16 @@ public class PatientsFactory {
 	private static Patient createPatient(String input) {
 		switch (input.toCharArray()[0]) {
 		case 'H':
-			return new Patient(new Healthy());
+			return new Patient(HEALTHY);
 		case 'F':
-			return new Patient(new Fever());
+			return new Patient(FEVER);
 		case 'D':
-			return new Patient(new Diabetes());
+			return new Patient(DIABETES);
 		case 'T':
-			return new Patient(new Tuberculusis());
+			return new Patient(TUBERCULUSIS);
 
 		default:
-			return new Patient(new Healthy());
+			return new Patient(HEALTHY);
 		}
 	}
 }

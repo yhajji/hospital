@@ -4,11 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nespresso.sofa.interview.hospital.healthstatus.Dead;
-import com.nespresso.sofa.interview.hospital.healthstatus.Diabetes;
-import com.nespresso.sofa.interview.hospital.healthstatus.Fever;
-import com.nespresso.sofa.interview.hospital.healthstatus.Healthy;
-import com.nespresso.sofa.interview.hospital.healthstatus.Tuberculusis;
+import static com.nespresso.sofa.interview.hospital.HealthStatus.*;
 
 public class PatientCounter {
 
@@ -25,15 +21,15 @@ public class PatientCounter {
 
 	public void count(List<Patient> patients) {
 		for (Patient patient : patients) {
-			if (patient.getHealthStatus() instanceof Fever)
+			if (patient.check(FEVER))
 				healthCounter.replace("F", healthCounter.get("F") + 1);
-			else if (patient.getHealthStatus() instanceof Healthy)
+			else if (patient.check(HEALTHY))
 				healthCounter.replace("H", healthCounter.get("H") + 1);
-			else if (patient.getHealthStatus() instanceof Diabetes)
+			else if (patient.check(DIABETES))
 				healthCounter.replace("D", healthCounter.get("D") + 1);
-			else if (patient.getHealthStatus() instanceof Tuberculusis)
+			else if (patient.check(TUBERCULUSIS))
 				healthCounter.replace("T", healthCounter.get("T") + 1);
-			else if (patient.getHealthStatus() instanceof Dead)
+			else if (patient.check(DEAD))
 				healthCounter.replace("X", healthCounter.get("X") + 1);
 		}
 	}
